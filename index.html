@@ -1,159 +1,201 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="dark">
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="dark light">
-<title>PHO LA</title>
-<meta name="description" content="TODO: mo ta ngan ve trang cua ban">
-<link rel="stylesheet" href="style.css">
-<link rel="icon" href="data:,">
+<meta name="description" content="WIS — python dev, automation, aspiring security engineer">
+<link rel="icon" type="image/jpeg" href="avatar.jpg">
+<title>wis</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --fg: #e8e8e8;
+    --fg-muted: #999;
+    --bg: #0a0a0a;
+    --border: #2a2a2a;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
+      "Roboto Mono", "Oxygen Mono", "Ubuntu Mono", "Source Code Pro",
+      "Fira Mono", "Droid Sans Mono", Consolas, "Courier New", monospace;
+    background: var(--bg);
+    color: var(--fg);
+    max-width: 52rem;
+    margin: 4rem auto 0 auto;
+    padding: 0 1.25rem 6rem 1.25rem;
+  }
+  canvas#bg {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    image-rendering: pixelated; z-index: 0; pointer-events: none;
+  }
+  body > *:not(canvas) { position: relative; z-index: 1; }
+  a { color: var(--fg); text-decoration: none; transition: opacity .15s ease; }
+  a:hover { opacity: .7; }
+
+  .container { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; }
+
+  .pic {
+    --corner-color: var(--fg-muted);
+    --corner-len: .5rem;
+    --corner-w: .125rem;
+    display: block; width: 12rem; height: 12rem; padding: .75rem;
+    object-fit: cover; cursor: pointer;
+    background:
+      linear-gradient(var(--corner-color), var(--corner-color)) top left / var(--corner-len) var(--corner-w) no-repeat,
+      linear-gradient(var(--corner-color), var(--corner-color)) top left / var(--corner-w) var(--corner-len) no-repeat,
+      linear-gradient(var(--corner-color), var(--corner-color)) top right / var(--corner-len) var(--corner-w) no-repeat,
+      linear-gradient(var(--corner-color), var(--corner-color)) top right / var(--corner-w) var(--corner-len) no-repeat,
+      linear-gradient(var(--corner-color), var(--corner-color)) bottom left / var(--corner-len) var(--corner-w) no-repeat,
+      linear-gradient(var(--corner-color), var(--corner-color)) bottom left / var(--corner-w) var(--corner-len) no-repeat,
+      linear-gradient(var(--corner-color), var(--corner-color)) bottom right / var(--corner-len) var(--corner-w) no-repeat,
+      linear-gradient(var(--corner-color), var(--corner-color)) bottom right / var(--corner-w) var(--corner-len) no-repeat;
+  }
+  .info h1 { font-size: 1.75rem; font-weight: 400; letter-spacing: -.02em; }
+  .info h2 { font-size: .875rem; font-weight: 400; color: var(--fg-muted); margin-top: .25rem; }
+  .links { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: .5rem; margin-top: 1.25rem; font-size: .8125rem; }
+  .links span { color: var(--fg-muted); font-size: .375rem; opacity: .5; }
+  .links a { color: var(--fg-muted); border-bottom: 1px solid var(--border); padding-bottom: 1px; transition: color .15s ease, border-color .15s ease; }
+  .links a:hover { color: var(--fg); border-color: var(--fg-muted); opacity: 1; }
+
+  section { width: 100%; max-width: 36rem; margin: 4rem auto 0 auto; text-align: left; }
+  section h2 { font-size: .8125rem; font-weight: 400; color: var(--fg-muted); margin-bottom: 1rem; }
+  section h2::before { content: "# "; opacity: .5; }
+  .facts { list-style: none; font-size: .875rem; line-height: 2; }
+  .facts li::before { content: "> "; color: var(--fg-muted); }
+  .proj { display: block; border: 1px solid var(--border); padding: .9rem 1rem; margin-bottom: .75rem; transition: border-color .15s ease; }
+  .proj:hover { border-color: var(--fg-muted); opacity: 1; }
+  .proj b { font-weight: 400; font-size: .9375rem; }
+  .proj p { color: var(--fg-muted); font-size: .8125rem; margin-top: .25rem; }
+  .muted { color: var(--fg-muted); font-size: .875rem; }
+  footer { text-align: center; color: var(--fg-muted); font-size: .75rem; margin-top: 5rem; opacity: .6; }
+
+  #egg { display: none; border: 1px dashed var(--border); padding: 1rem; margin-top: 2rem; font-size: .8125rem; }
+  #egg.show { display: block; }
+  #egg h2 { margin-bottom: .5rem; }
+  #egg button { font: inherit; background: none; border: 1px solid var(--border); color: var(--fg-muted); padding: .25rem .75rem; margin-top: .75rem; cursor: pointer; }
+  #egg button:hover { color: var(--fg); border-color: var(--fg-muted); }
+</style>
 </head>
 <body>
-<a class="skip-to" href="#main-nav">skip to content</a>
 
-<div class="site">
-  <div class="main-container">
-    <!-- ==================== SIDEBAR ==================== -->
-    <aside class="sidebar">
-      <a href="#top" class="version"><span>v1.0</span></a>
-
-      <div class="profile">
-        <div class="profile-img" id="profile-img" role="img" aria-label="Avatar"><img src="avatar.jpg" alt="avatar"></div>
-        <h1 class="site-title" id="site-title">PHO LA</h1>
-        <hr>
-      </div>
-
-      <nav class="nav" id="main-nav">
-        <ul id="nav-list"></ul>
-      </nav>
-
-      <!-- mini player -->
-      <div class="mini-player" id="mini-player">
-        <div class="mp-disc" id="mp-disc" aria-hidden="true"></div>
-        <button class="mp-btn" id="mp-prev" aria-label="Previous track">&lt;&lt;</button>
-        <button class="mp-btn" id="mp-play" aria-label="Play/Pause">&gt;</button>
-        <button class="mp-btn" id="mp-next" aria-label="Next track">&gt;&gt;</button>
-        <div class="mp-title" id="mp-title-wrap"><div class="mp-text" id="mp-title">...</div></div>
-      </div>
-
-      <button class="settings-button" id="settings-btn" aria-label="Settings">SET</button>
-
-      <!-- settings panel -->
-      <div class="settings-panel" id="settings-panel">
-        <div class="settings-inner">
-          <div class="settings-container">
-            <span class="settings-label">theme</span>
-            <div class="settings-theme">
-              <button class="settings-theme-box" id="theme-current">dark</button>
-              <button class="settings-theme-prev" id="theme-prev">&lt;&lt;</button>
-              <button class="settings-theme-next" id="theme-next">&gt;&gt;</button>
-            </div>
-          </div>
-          <div class="settings-container">
-            <span class="settings-label">font size</span>
-            <div class="settings-font-size">
-              <button class="settings-font-small" id="font-small">A-</button>
-              <button class="settings-font-reset" id="font-reset">A</button>
-              <button class="settings-font-big" id="font-big">A+</button>
-            </div>
-          </div>
-          <div class="settings-container">
-            <span class="settings-label">motion</span>
-            <button class="settings-toggle" id="toggle-motion" aria-pressed="true">on</button>
-          </div>
-          <div class="settings-container">
-            <span class="settings-label">parallax</span>
-            <button class="settings-toggle" id="toggle-parallax" aria-pressed="true">on</button>
-          </div>
-          <div class="settings-container">
-            <span class="settings-label">effects</span>
-            <button class="settings-toggle" id="toggle-effects" aria-pressed="true">on</button>
-          </div>
-        </div>
-      </div>
-    </aside>
-
-    <!-- ==================== CONTENT ==================== -->
-    <div class="content">
-      <!-- parallax background layers -->
-      <div class="parallax" id="parallax">
-        <div class="layer sky"></div>
-        <div class="layer bg2"></div>
-        <div class="layer bg1"></div>
-        <div class="layer mid3"></div>
-        <div class="layer mid2"></div>
-        <div class="layer mid1"></div>
-        <div class="layer fg"></div>
-        <div class="tint"></div>
-      </div>
-
-      <canvas id="shooting-stars-canvas"></canvas>
-      <canvas id="rain-canvas"></canvas>
-
-      <!-- content panels -->
-      <div class="content-panel is-open" id="panel-home">
-        <div class="inner">
-          <h2 id="wis-wall"></h2>
-          <p id="intro"></p>
-          <p>Some quick facts:</p>
-          <ul id="facts-list"></ul>
-        </div>
-      </div>
-
-      <div class="content-panel is-closed" id="panel-blog">
-        <div class="inner">
-          <h2>blog</h2>
-          <p>chua co bai nao. som thoi.</p>
-          <ul id="blog-list" class="plain-list"></ul>
-        </div>
-      </div>
-
-      <div class="content-panel is-closed" id="panel-album">
-        <div class="inner">
-          <h2>album</h2>
-          <div id="album-list"></div>
-        </div>
-      </div>
-
-      <div class="content-panel is-closed" id="panel-projects">
-        <div class="inner">
-          <h2>projects</h2>
-          <div id="projects-list"></div>
-        </div>
-      </div>
-
-      <div class="content-panel is-closed" id="panel-links">
-        <div class="inner">
-          <h2>cool sites</h2>
-          <div class="button-group" id="links-list"></div>
-        </div>
-      </div>
-
-      <div class="content-panel is-closed" id="panel-contact">
-        <div class="inner">
-          <h2>contact</h2>
-          <p id="contact-email"></p>
-          <div class="button-group" id="social-list"></div>
-        </div>
-      </div>
+<div class="container">
+  <img src="avatar.jpg" alt="wis" class="pic" id="avatar" title="click me">
+  <div class="info">
+    <h1>WIS</h1>
+    <h2>python dev · automation &amp; bots · aspiring security engineer</h2>
+    <div class="links">
+      <a href="https://github.com/wis333k" target="_blank" rel="noopener noreferrer">github</a>
+      <span>■</span>
+      <a href="#projects">projects</a>
+      <span>■</span>
+      <a href="#blog">blog</a>
+      <span>■</span>
+      <a href="#contact">contact</a>
     </div>
   </div>
-</div>
 
-<div class="menu-overlay" id="menu-overlay"></div>
-<button class="menu-toggle" id="menu-toggle" aria-label="Menu">MENU</button>
+  <section>
+    <h2>quick facts</h2>
+    <ul class="facts">
+      <li>i'm vietnamese. this is my first personal website</li>
+      <li>my main coding language is python</li>
+      <li>i like taking photos, this is my album</li>
+      <li>i want to be a professional cyber security</li>
+      <li>i code websites, automation tools and bots</li>
+    </ul>
+  </section>
 
-<!-- easter egg -->
-<div id="easter-egg" hidden>
-  <div class="easter-inner">
+  <section id="projects">
+    <h2>projects</h2>
+    <a class="proj" href="https://github.com/wis333k/otools-app" target="_blank" rel="noopener noreferrer">
+      <b>ODownloader</b>
+      <p>download tool</p>
+    </a>
+    <a class="proj" href="https://github.com/wis333k/ai-studio-landing" target="_blank" rel="noopener noreferrer">
+      <b>Ostudio</b>
+      <p>studio tool</p>
+    </a>
+  </section>
+
+  <section id="blog">
+    <h2>blog</h2>
+    <p class="muted">chua co bai nao. som thoi.</p>
+  </section>
+
+  <section id="contact">
+    <h2>contact</h2>
+    <p class="muted">wis@email — or find me on <a href="https://github.com/wis333k" target="_blank" rel="noopener noreferrer" style="border-bottom:1px solid var(--border)">github</a></p>
+  </section>
+
+  <div id="egg">
     <h2>CHAO MUNG DEN MAT SAU TRANG WEB</h2>
-    <p>(cho nay tao giau, danh bao ai)</p>
-    <p>co mot con ech o day nhung no khong ro no lam gi.</p>
+    <p class="muted">(cho nay tao giau, danh bao ai)</p>
+    <p class="muted">co mot con ech o day nhung no khong ro no lam gi.</p>
     <button id="egg-close" type="button">dong cai nay di</button>
   </div>
+
+  <footer>© 2026 wis</footer>
 </div>
 
-<script src="script.js"></script>
+<canvas id="bg"></canvas>
+
+<script>
+  // easter egg: click avatar 5 lan
+  (function () {
+    var n = 0, egg = document.getElementById("egg");
+    document.getElementById("avatar").addEventListener("click", function () {
+      if (++n >= 5) { egg.classList.add("show"); egg.scrollIntoView({ block: "nearest" }); }
+    });
+    document.getElementById("egg-close").addEventListener("click", function () {
+      egg.classList.remove("show"); n = 0;
+    });
+  })();
+
+  // subtle dithered glow background
+  (function () {
+    var canvas = document.getElementById("bg");
+    var ctx = canvas.getContext("2d");
+    var bayer4 = [
+      [0/16, 8/16, 2/16, 10/16],
+      [12/16, 4/16, 14/16, 6/16],
+      [3/16, 11/16, 1/16, 9/16],
+      [15/16, 7/16, 13/16, 5/16]
+    ];
+    var pixelSize = 4, time = 0;
+    function resize() {
+      canvas.width = Math.ceil(window.innerWidth / pixelSize);
+      canvas.height = Math.ceil(window.innerHeight / pixelSize);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+    function draw() {
+      var w = canvas.width, h = canvas.height;
+      var imageData = ctx.createImageData(w, h);
+      var data = imageData.data;
+      var cx = w / 2, cy = h / 2;
+      var maxDist = Math.sqrt(cx * cx + cy * cy);
+      for (var y = 0; y < h; y++) {
+        for (var x = 0; x < w; x++) {
+          var dx = x - cx, dy = y - cy;
+          var dist = Math.sqrt(dx * dx + dy * dy) / maxDist;
+          var n = Math.sin(x * 0.08 + time * 0.4) * Math.cos(y * 0.06 - time * 0.3) * 0.15
+                + Math.sin((x + y) * 0.04 + time * 0.2) * 0.1;
+          var intensity = Math.max(0, Math.min(1, (1 - dist * 0.9) * 0.2 + n));
+          var idx = (y * w + x) * 4;
+          if (intensity > bayer4[y % 4][x % 4]) {
+            data[idx] = 220; data[idx + 1] = 220; data[idx + 2] = 220; data[idx + 3] = 18;
+          } else {
+            data[idx + 3] = 0;
+          }
+        }
+      }
+      ctx.putImageData(imageData, 0, 0);
+      time += 0.02;
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+</script>
 </body>
 </html>
